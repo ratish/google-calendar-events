@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Google Calendar Events</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet" />
+        <script src="https://unpkg.com/axios@0.19.2/dist/axios.min.js"></script>
+        <script>
+            //Get calendar id from Settings > Integrate calendar
+            const calendarID = "PUBLIC_CALENDAR_ID@group.calendar.google.com"; //CAB Events
+            const eventCount = 10;
+            const direction = "vertical"; //'vertical', 'horizontal'
+            const bar = "green"; //'yellow', 'green', 'darkgreen'
+            const background = "gray"; //'white', 'gray'
+
+            axios({
+                method: "post",
+                url: "http://localhost/google_calendar_events/index.php",
+                data: getFormData(),
+            }).then(function (response) {
+                const eventList = document.getElementById("event_list");
+                eventList.innerHTML = response.data;
+            });
+
+            function getFormData() {
+                const formData = new FormData();
+                formData.append("calendarID", calendarID);
+                formData.append("eventCount", eventCount);
+                formData.append("direction", direction);
+                formData.append("bar", bar);
+                formData.append("background", background);
+
+                return formData;
+            }
+        </script>
+        <style>
+            html {
+                font-size: 16px;
+            }
+
+            body {
+                font-family: "RobotoLight", sans-serif;
+                color: #444444;
+            }
+
+            a {
+                text-decoration: none;
+                color: #2d6a9f;
+                font-weight: bold;
+                font-size: 1rem;
+            }
+
+            .event-container {
+                display: flex;
+            }
+
+            .horizontal {
+                flex-wrap: wrap;
+            }
+
+            .vertical {
+                flex-direction: column;
+            }
+
+            .event-box {
+                padding: 8px;
+                margin: 6px;
+                flex: 1 0 calc(25% - 12px);
+                font-size: 0.8rem;
+            }
+
+            .event-title {
+                font-family: "RobotoBlack", sans-serif;
+                text-transform: uppercase;
+            }
+
+            .horizontal .event-title {
+                margin: 14px 0;
+            }
+
+            .date {
+                padding: 8px;
+                font-family: "RobotoLight", sans-serif;
+                font-size: 1.2rem;
+                font-style: italic;
+                text-transform: uppercase;
+                margin-bottom: 12px;
+                text-align: center;
+            }
+
+            .vertical .date {
+                width: 80px;
+            }
+
+            .vertical .event-detail {
+                margin-left: 20px;
+            }
+
+            .vertical .event-title {
+                font-family: "RobotoBlack", sans-serif;
+                text-transform: uppercase;
+                margin-bottom: 14px;
+            }
+
+            .vertical .event-info {
+                display: flex;
+            }
+
+            .event-description {
+                margin-top: 20px;
+                font-style: italic;
+                font-size: 0.9rem;
+            }
+
+            .yellow-bar {
+                border-top: 10px solid #e7c225;
+            }
+
+            .darkgreen-bar {
+                border-top: 10px solid #006633;
+            }
+
+            .green-bar {
+                border-top: 10px solid #04a756;
+            }
+
+            .white-bg {
+                background-color: #ffffff;
+            }
+
+            .gray-bg {
+                background-color: #f2f2f2;
+            }
+
+            .gray-border {
+                border: 1px solid #eeeeee;
+            }
+
+            .vertical .white-bg.gray-border {
+                border: none;
+                border-bottom: 1px solid #eeeeee;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="event_list"></div>
+    </body>
+</html>
